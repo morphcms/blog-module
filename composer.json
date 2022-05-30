@@ -15,7 +15,8 @@
         "laravel/scout": "^9.4",
         "spatie/laravel-sluggable": "^3.3",
         "optimistdigital/nova-translatable": "^2.0.0",
-        "whitecube/nova-flexible-content": "^v1.0.0"
+        "whitecube/nova-flexible-content": "^v1.0.0",
+        "nuwave/lighthouse": "^v5.51.0"
     },
     "extra": {
         "laravel": {
