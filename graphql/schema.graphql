@@ -1,0 +1,41 @@
+extend type Query {
+    post(id: ID! @eq): Post! @find(model: "Modules\\Blog\\Models\\Post")
+    posts: [Post!]! @all(model: "Modules\\Blog\\Models\\Post")
+}
+
+type Mutation {
+    createPost(
+        slug: String
+        summary: String!
+        title: String!
+        status: String!
+        user_id: ID!
+    ) : Post @create(model: "Modules\\Blog\\Models\\Post")
+
+    updatePost(
+        slug: String
+        summary: String
+        title: String
+        status: String
+        user_id: ID
+    ) : Post @update(model: "Modules\\Blog\\Models\\Post")
+
+    deletePost(
+        id: ID! @rules(apply: ["required"])
+    ): Post @delete(model: "Modules\\Blog\\Models\\Post")
+
+}
+
+type Post {
+    id: ID!
+
+    user: User @belongsTo
+
+    slug: String!,
+
+    title: String!,
+
+    summary: String!,
+
+    status: String!,
+}
