@@ -1,5 +1,5 @@
 extend type Query {
-    post(id: ID! @eq): Post! @find(model: "Modules\\Blog\\Models\\Post")
+    post(id: ID @eq, slug: String @eq(key: "slug->en")): Post @find(model: "Modules\\Blog\\Models\\Post")
     posts: [Post!]! @all(model: "Modules\\Blog\\Models\\Post")
 }
 
@@ -27,9 +27,9 @@ type Mutation {
 }
 
 type Post {
-    id: ID!
+    id: ID!,
 
-    user: User @belongsTo
+    user: User @belongsTo,
 
     slug: String!,
 
