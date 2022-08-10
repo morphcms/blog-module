@@ -4,32 +4,36 @@ namespace Modules\Blog\Policies;
 
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use Modules\Blog\Enums\PostPermission;
+use Modules\Blog\Enums\PostStatus;
 use Modules\Blog\Models\Post;
 
 class PostPolicy
 {
     use HandlesAuthorization;
 
-    public function before(User $user, $ability)
-    {
-        // TODO: Implement user permission
-        return true;
-    }
-
     /**
      * Determine whether the user can view any models.
      */
-    public function viewAny(User $user)
+    public function viewAny(?User $user)
     {
-        return true;
+        return ! $user || $user->canAny([PostPermission::ViewAny->value, PostPermission::ViewOwned->value]);
     }
 
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Post $post)
+    public function view(?User $user, Post $post)
     {
-        return true;
+        if (! $user) {
+            return PostStatus::from($post->status) === PostStatus::Published;
+        }
+
+        if ($post->isOwnedBy($user)) {
+            return true;
+        }
+
+        return $user->can(PostPermission::View->value);
     }
 
     /**
@@ -37,7 +41,7 @@ class PostPolicy
      */
     public function create(User $user)
     {
-        //
+        return $user->can(PostPermission::Create->value);
     }
 
     /**
@@ -45,7 +49,11 @@ class PostPolicy
      */
     public function update(User $user, Post $post)
     {
-        //
+        if ($post->isOwnedBy($user)) {
+            return true;
+        }
+
+        return $user->can(PostPermission::Update->value);
     }
 
     /**
@@ -53,7 +61,20 @@ class PostPolicy
      */
     public function delete(User $user, Post $post)
     {
-        //
+        if ($post->isOwnedBy($user)) {
+            return true;
+        }
+
+        return $user->can(PostPermission::Delete->value);
+    }
+
+    public function replicate(User $user, Post $post)
+    {
+        if ($post->isOwnedBy($user)) {
+            return true;
+        }
+
+        return $user->can(PostPermission::Replicate->value);
     }
 
     /**
@@ -61,7 +82,11 @@ class PostPolicy
      */
     public function restore(User $user, Post $post)
     {
-        //
+        if ($post->isOwnedBy($user)) {
+            return true;
+        }
+
+        return $user->can(PostPermission::Restore->value);
     }
 
     /**
@@ -69,6 +94,10 @@ class PostPolicy
      */
     public function forceDelete(User $user, Post $post)
     {
-        //
+        if ($post->isOwnedBy($user)) {
+            return true;
+        }
+
+        return $user->can(PostPermission::Delete->value);
     }
 }

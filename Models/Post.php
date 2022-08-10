@@ -11,8 +11,14 @@ use Modules\Blog\Database\Factories\PostFactory;
 use Modules\Blog\Enums\PostStatus;
 use Modules\Blog\Utils\Table;
 use Modules\Collection\Traits\HasCollections;
+use Modules\Morphling\Contracts\CanBeOwned;
+use Modules\Morphling\Traits\HasOwner;
 use Modules\Morphling\Traits\HasTranslatableSlug;
 use Modules\PageBuilder\Traits\HasContents;
+use Modules\SeoSorcery\Contracts\ICanBeSeoAnalyzed;
+use Modules\SeoSorcery\Traits\HasSeo;
+use Modules\SeoSorcery\Utils\SeoOptions;
+use Spatie\Image\Manipulations;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
@@ -20,9 +26,12 @@ use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 use Spatie\Translatable\HasTranslations;
 
-class Post extends Model implements HasMedia
+/**
+ * @method Post whereOwnedBy(string|int $id)
+ * @method Post whereNullOrOwnedBy(string|int $id)
+ */
+class Post extends Model implements HasMedia, CanBeOwned, ICanBeSeoAnalyzed
 {
-
     use HasFactory,
         HasSlug,
         Searchable,
@@ -30,8 +39,9 @@ class Post extends Model implements HasMedia
         HasCollections,
         HasTranslatableSlug,
         InteractsWithMedia,
-        HasContents;
-
+        HasContents,
+        HasSeo,
+        HasOwner;
 
     public array $translatable = ['title', 'summary', 'slug'];
 
@@ -45,6 +55,15 @@ class Post extends Model implements HasMedia
     public function getTable(): string
     {
         return Table::posts();
+    }
+
+    /**
+     * Alias for user relation
+     * @return BelongsTo
+     */
+    public function author(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function user(): BelongsTo
@@ -65,7 +84,6 @@ class Post extends Model implements HasMedia
             ->doNotGenerateSlugsOnUpdate();
     }
 
-
     public function registerMediaCollections(): void
     {
         $this->addMediaCollection('default');
@@ -74,7 +92,12 @@ class Post extends Model implements HasMedia
 
     public function registerMediaConversions(Media $media = null): void
     {
+        $this->addMediaConversion('webp')
+            ->format(Manipulations::FORMAT_WEBP)
+            ->performOnCollections('banner', 'default');
+
         $this->addMediaConversion('thumb')
+            ->format(Manipulations::FORMAT_WEBP)
             ->width(150)
             ->height(150)
             ->quality(70);
@@ -89,15 +112,13 @@ class Post extends Model implements HasMedia
             ->published()
             ->get();
 
-
         try {
             foreach ($contents as $content) {
                 $indexes['content_' . $content->locale] = $content->getIndexData();
             }
         } catch (\Exception $exception) {
-                //
+            //
         }
-
 
         return [
             'title' => $this->title,
@@ -107,5 +128,9 @@ class Post extends Model implements HasMedia
         ];
     }
 
-
+    function setSeoOptions(): SeoOptions
+    {
+        return SeoOptions::make($this)
+            ->setThumbnailCollection('banner');
+    }
 }

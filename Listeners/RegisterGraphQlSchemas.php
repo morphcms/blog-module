@@ -21,13 +21,15 @@ class RegisterGraphQlSchemas
     /**
      * Handle the event.
      *
-     * @param BuildSchemaString $event
+     * @param  BuildSchemaString  $event
      * @return string
+     *
      * @throws FileNotFoundException
      */
     public function handle(BuildSchemaString $event): string
     {
         $stitcher = new SchemaStitcher(module_path('Blog', 'graphql/schema.graphql'));
+
         return $stitcher->getSchemaString();
     }
 }

@@ -2,11 +2,10 @@
 
 namespace Modules\Blog\Nova\Metrics;
 
-use App\Nova\Metrics\Model;
+use function __;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Metrics\Value;
 use Modules\Blog\Models\Post;
-use function __;
 
 class PostsCount extends Value
 {
@@ -46,7 +45,12 @@ class PostsCount extends Value
      */
     public function cacheFor()
     {
-        // return now()->addMinutes(5);
+        return now()->addMinutes(5);
+    }
+
+    public function name()
+    {
+        return __('Total Posts');
     }
 
     /**

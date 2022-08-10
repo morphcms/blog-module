@@ -9,10 +9,8 @@
         }
     ],
     "require": {
-        "laravel/nova": "^4.0",
         "eminiarts/nova-tabs": "^2.0.3",
         "ebess/advanced-nova-media-library": "^4.0",
-        "meilisearch/meilisearch-php": "^0.23.0",
         "laravel/scout": "^9.4",
         "spatie/laravel-sluggable": "^3.3",
         "optimistdigital/nova-translatable": "^2.0.0",

@@ -4,6 +4,9 @@ namespace Modules\Blog\Transformers;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/**
+ * @deprecated Should use an Orion resource instead
+ */
 class RecommededPostResource extends JsonResource
 {
     /**

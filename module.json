@@ -1,7 +1,7 @@
 {
     "name": "Blog",
     "alias": "blog",
-    "description": "",
+    "description": "Manage posts.",
     "keywords": [],
     "priority": 1,
     "providers": [
@@ -9,5 +9,9 @@
     ],
     "aliases": {},
     "files": [],
-    "requires": ["morphling", "collection", "page-builder"]
+    "requires": ["morphling", "collection", "page-builder", "SeoSorcery"],
+    "minimumCoreVersion": "",
+    "title": "Blog",
+    "version": "0.0.0",
+    "author": "Binome Way"
 }

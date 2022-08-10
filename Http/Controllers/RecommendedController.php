@@ -2,7 +2,6 @@
 
 namespace Modules\Blog\Http\Controllers;
 
-use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Routing\Controller;
 use Modules\Blog\Models\Post;
@@ -18,7 +17,7 @@ class RecommendedController extends Controller
             ->with('collections')
             ->whereNot('id', $post->id)
             ->whereHas('collections', function ($query) use ($post) {
-                $query->whereIn(Table::collectionables() . '.collection_id', $post->collections->pluck('id')->toArray());
+                $query->whereIn(Table::collectionables().'.collection_id', $post->collections->pluck('id')->toArray());
             })
             ->limit(3)
             ->inRandomOrder()

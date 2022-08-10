@@ -9,7 +9,6 @@ use Modules\Blog\Transformers\PostResource;
 
 class IndexController extends Controller
 {
-
     public function __invoke(): AnonymousResourceCollection
     {
         $posts = Post::query()->published()->with('collections')->get();

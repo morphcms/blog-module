@@ -9,7 +9,8 @@ use Modules\Blog\Transformers\PostResource;
 
 class ShowController extends Controller
 {
-    #[Pure] public function __invoke(Post $post): PostResource
+    #[Pure]
+    public function __invoke(Post $post): PostResource
     {
         return new PostResource($post);
     }

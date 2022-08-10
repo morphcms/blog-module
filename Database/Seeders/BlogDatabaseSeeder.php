@@ -16,6 +16,8 @@ class BlogDatabaseSeeder extends Seeder
     {
         Model::unguard();
 
+        $this->callOnce(RolesAndPermissionsSeeder::class);
+
         if (app()->environment('local')) {
             $this->call(SampleDataTableSeeder::class);
         }

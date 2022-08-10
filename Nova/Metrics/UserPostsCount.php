@@ -4,10 +4,10 @@ namespace Modules\Blog\Nova\Metrics;
 
 use function __;
 use Laravel\Nova\Http\Requests\NovaRequest;
-use Laravel\Nova\Metrics\Trend;
+use Laravel\Nova\Metrics\Value;
 use Modules\Blog\Models\Post;
 
-class PostsPerDay extends Trend
+class UserPostsCount extends Value
 {
     /**
      * Calculate the value of the metric.
@@ -17,7 +17,7 @@ class PostsPerDay extends Trend
      */
     public function calculate(NovaRequest $request)
     {
-        return $this->countByDays($request, Post::class);
+        return $this->count($request, Post::whereOwnedBy($request->user()->getKey()));
     }
 
     /**
@@ -30,7 +30,11 @@ class PostsPerDay extends Trend
         return [
             30 => __('30 Days'),
             60 => __('60 Days'),
-            90 => __('90 Days'),
+            365 => __('365 Days'),
+            'TODAY' => __('Today'),
+            'MTD' => __('Month To Date'),
+            'QTD' => __('Quarter To Date'),
+            'YTD' => __('Year To Date'),
         ];
     }
 
@@ -41,7 +45,12 @@ class PostsPerDay extends Trend
      */
     public function cacheFor()
     {
-        return now()->addMinutes(5);
+        //return now()->addMinutes(5);
+    }
+
+    public function name()
+    {
+        return __('My Posts');
     }
 
     /**
@@ -51,6 +60,6 @@ class PostsPerDay extends Trend
      */
     public function uriKey()
     {
-        return 'posts-per-day';
+        return 'posts-count';
     }
 }
