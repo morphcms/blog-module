@@ -59,6 +59,7 @@ class Post extends Model implements HasMedia, CanBeOwned, ICanBeSeoAnalyzed
 
     /**
      * Alias for user relation
+     *
      * @return BelongsTo
      */
     public function author(): BelongsTo
@@ -114,7 +115,7 @@ class Post extends Model implements HasMedia, CanBeOwned, ICanBeSeoAnalyzed
 
         try {
             foreach ($contents as $content) {
-                $indexes['content_' . $content->locale] = $content->getIndexData();
+                $indexes['content_'.$content->locale] = $content->getIndexData();
             }
         } catch (\Exception $exception) {
             //
@@ -128,7 +129,7 @@ class Post extends Model implements HasMedia, CanBeOwned, ICanBeSeoAnalyzed
         ];
     }
 
-    function setSeoOptions(): SeoOptions
+    public function setSeoOptions(): SeoOptions
     {
         return SeoOptions::make($this)
             ->setThumbnailCollection('banner');

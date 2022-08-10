@@ -25,7 +25,7 @@ class PostsController extends Controller
             'contentPublished',
             'contentsPublished',
             'media',
-            'seo'
+            'seo',
         ];
     }
 

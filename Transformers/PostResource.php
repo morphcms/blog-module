@@ -31,9 +31,9 @@ class PostResource extends JsonResource
             'summary' => $this->summary,
             'readTime' => $this->read_time,
             'banner' => $this->getFirstMediaUrl('banner'),
-            'seo' =>  $this->whenLoaded('seo', fn() => new SeoEntityResource($this->seo)),
-            'collection' => $this->whenLoaded('collection', fn() => new CollectionResource($this->collection)),
-            'collections' => $this->whenLoaded('collections', fn() => CollectionResource::collection($this->collections)),
+            'seo' => $this->whenLoaded('seo', fn () => new SeoEntityResource($this->seo)),
+            'collection' => $this->whenLoaded('collection', fn () => new CollectionResource($this->collection)),
+            'collections' => $this->whenLoaded('collections', fn () => CollectionResource::collection($this->collections)),
             'content' => new ContentResource($this->content),
         ];
     }

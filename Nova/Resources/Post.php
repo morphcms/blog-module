@@ -12,7 +12,6 @@ use Laravel\Nova\Fields\Badge;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Line;
-use Laravel\Nova\Fields\MorphedByMany;
 use Laravel\Nova\Fields\Slug;
 use Laravel\Nova\Fields\Stack;
 use Laravel\Nova\Fields\Text;
@@ -24,7 +23,6 @@ use Modules\Blog\Nova\Metrics\PostsCount;
 use Modules\Blog\Nova\Metrics\PostsPerDay;
 use Modules\Blog\Nova\Metrics\UserPostsCount;
 use Modules\Blog\Utils\Table;
-use Modules\Collection\Nova\Resources\Collection;
 use Modules\Collection\Traits\HasCollectionsNova;
 use Modules\Morphling\Nova\Actions\UpdateStatus;
 use Modules\Morphling\Nova\Filters\ByStatus;
@@ -88,7 +86,7 @@ class Post extends Resource
                 ->rules(['max:180', Rule::unique(Table::posts(), 'slug')->ignoreModel($this->model())]),
 
             Badge::make(__('Status'), 'status')
-                ->displayUsing(fn() => PostStatus::from($this->status)->value)
+                ->displayUsing(fn () => PostStatus::from($this->status)->value)
                 ->map(PostStatus::getNovaBadgeColors())
                 ->exceptOnForms(),
 
@@ -123,7 +121,7 @@ class Post extends Resource
         return [
             PostsPerDay::make()->canSeeWhen(PostPermission::ViewAny->value),
             PostsCount::make()->canSeeWhen(PostPermission::ViewAny->value),
-            UserPostsCount::make()->canSee(fn($request) => $request->user()->canAny([PostPermission::ViewAny->value, PostPermission::ViewOwned->value])),
+            UserPostsCount::make()->canSee(fn ($request) => $request->user()->canAny([PostPermission::ViewAny->value, PostPermission::ViewOwned->value])),
         ];
     }
 

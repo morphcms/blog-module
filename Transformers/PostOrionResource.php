@@ -33,7 +33,7 @@ class PostOrionResource extends Resource
             'content' => $this->whenLoaded('contentPublished', fn () => new ContentResource($this->contentPublished)),
             'contents' => $this->whenLoaded('contentsPublished', fn () => ContentResource::collection($this->contentsPublished)),
             'banner' => $this->whenLoaded('media', fn () => $this->getFirstMediaUrl('banner')),
-            'seo' =>  $this->whenLoaded('seo', fn() => new SeoEntityResource($this->seo)),
+            'seo' => $this->whenLoaded('seo', fn () => new SeoEntityResource($this->seo)),
         ];
     }
 }
