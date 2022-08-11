@@ -4,6 +4,7 @@ namespace Modules\Blog\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Modules\Blog\Nova\Resources\Post;
+use Modules\Blog\Policies\PostPolicy;
 use Modules\PageBuilder\Facades\PageBuilder;
 
 class BlogServiceProvider extends ServiceProvider
@@ -33,6 +34,13 @@ class BlogServiceProvider extends ServiceProvider
 
         PageBuilder::types(Post::class);
     }
+
+    /**
+     * The policy mappings for the application.
+     */
+    protected array $policies = [
+        Post::class => PostPolicy::class,
+    ];
 
     private function registerPolicies()
     {
