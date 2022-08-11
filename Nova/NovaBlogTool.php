@@ -5,8 +5,8 @@ namespace Modules\Blog\Nova;
 use Illuminate\Http\Request;
 use Laravel\Nova\Menu\MenuSection;
 use Laravel\Nova\Tool;
-use Modules\Blog\Nova\Resources\Post;
 use Modules\Blog\Enums\PostPermission;
+use Modules\Blog\Nova\Resources\Post;
 
 class NovaBlogTool extends Tool
 {
