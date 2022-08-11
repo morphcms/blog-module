@@ -3,6 +3,8 @@
 namespace Modules\Blog\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Modules\Blog\Nova\Resources\Post;
+use Modules\PageBuilder\Facades\PageBuilder;
 
 class BlogServiceProvider extends ServiceProvider
 {
@@ -27,6 +29,16 @@ class BlogServiceProvider extends ServiceProvider
         $this->registerConfig();
         $this->registerViews();
         $this->loadMigrationsFrom(module_path($this->moduleName, 'Database/Migrations'));
+        $this->registerPolicies();
+
+        PageBuilder::types(Post::class);
+    }
+
+    private function registerPolicies()
+    {
+        foreach ($this->policies as $model => $policy) {
+            \Gate::policy($model, $policy);
+        }
     }
 
     /**

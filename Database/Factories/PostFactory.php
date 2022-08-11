@@ -31,7 +31,7 @@ class PostFactory extends Factory
 
     public function published(): PostFactory
     {
-        return $this->state(fn () => [
+        return $this->state(fn() => [
             'status' => PostStatus::Published,
         ]);
     }
