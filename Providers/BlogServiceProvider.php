@@ -2,6 +2,7 @@
 
 namespace Modules\Blog\Providers;
 
+use Gate;
 use Illuminate\Support\ServiceProvider;
 use Modules\Blog\Nova\Resources\Post;
 use Modules\Blog\Policies\PostPolicy;
@@ -45,7 +46,7 @@ class BlogServiceProvider extends ServiceProvider
     private function registerPolicies()
     {
         foreach ($this->policies as $model => $policy) {
-            \Gate::policy($model, $policy);
+            Gate::policy($model, $policy);
         }
     }
 
