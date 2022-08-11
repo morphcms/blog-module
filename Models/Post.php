@@ -106,26 +106,12 @@ class Post extends Model implements HasMedia, CanBeOwned, ICanBeSeoAnalyzed
 
     public function toSearchableArray(): array
     {
-        $indexes = [];
-
-        $contents = $this
-            ->contents()
-            ->published()
-            ->get();
-
-        try {
-            foreach ($contents as $content) {
-                $indexes['content_'.$content->locale] = $content->getIndexData();
-            }
-        } catch (\Exception $exception) {
-            //
-        }
-
         return [
             'title' => $this->title,
+            'slug' => $this->slug,
             'summary' => $this->summary,
             'status' => $this->status,
-            ...$indexes,
+            ...$this->getContentsIndexing(),
         ];
     }
 
