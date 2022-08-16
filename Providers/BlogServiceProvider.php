@@ -2,7 +2,6 @@
 
 namespace Modules\Blog\Providers;
 
-use Gate;
 use Illuminate\Support\ServiceProvider;
 use Modules\Blog\Nova\Resources\Post;
 use Modules\Blog\Policies\PostPolicy;
@@ -31,23 +30,6 @@ class BlogServiceProvider extends ServiceProvider
         $this->registerConfig();
         $this->registerViews();
         $this->loadMigrationsFrom(module_path($this->moduleName, 'Database/Migrations'));
-        $this->registerPolicies();
-
-        PageBuilder::types(Post::class);
-    }
-
-    /**
-     * The policy mappings for the application.
-     */
-    protected array $policies = [
-        Post::class => PostPolicy::class,
-    ];
-
-    private function registerPolicies()
-    {
-        foreach ($this->policies as $model => $policy) {
-            Gate::policy($model, $policy);
-        }
     }
 
     /**
