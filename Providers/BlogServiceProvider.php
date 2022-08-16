@@ -3,9 +3,6 @@
 namespace Modules\Blog\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use Modules\Blog\Nova\Resources\Post;
-use Modules\Blog\Policies\PostPolicy;
-use Modules\PageBuilder\Facades\PageBuilder;
 
 class BlogServiceProvider extends ServiceProvider
 {
