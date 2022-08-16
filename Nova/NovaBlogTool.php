@@ -10,13 +10,11 @@ use Modules\Blog\Nova\Resources\Post;
 
 class NovaBlogTool extends Tool
 {
-    private static array $resources = [
-        Post::class,
-    ];
-
     public function boot()
     {
-        \Nova::resources(self::$resources);
+        \Nova::resources([
+            Post::class,
+        ]);
     }
 
     public function menu(Request $request)
