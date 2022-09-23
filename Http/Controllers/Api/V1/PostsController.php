@@ -17,6 +17,17 @@ class PostsController extends Controller
 
     protected $request = PostOrionRequest::class;
 
+    protected function keyName(): string
+    {
+        $locale = app()->getLocale();
+
+        if (count(config('nova-translatable.locales')) > 1) {
+            return "slug->$locale";
+        } else {
+            return "slug";
+        }
+    }
+
     public function includes(): array
     {
         return [
@@ -25,37 +36,53 @@ class PostsController extends Controller
             'contentPublished',
             'contentsPublished',
             'media',
+            'author',
             'seo',
         ];
     }
 
     public function exposedScopes(): array
     {
-        return ['latest', 'whereInCollections', 'whereInCollectionsBySlug'];
+        return [
+            'latest',
+            'whereInCollections',
+            'whereInCollectionsBySlug',
+        ];
     }
 
     public function searchableBy(): array
     {
         $locale = app()->getLocale();
 
-        return ["title->{$locale}", "slug->{$locale}", "summary->{$locale}"];
+        if (count(config('nova-translatable.locales')) > 1) {
+            return ["title->$locale", "slug->$locale", "summary->$locale"];
+        } else {
+            return ["title", "slug", "summary"];
+        }
     }
 
     public function sortableBy(): array
     {
         $locale = app()->getLocale();
 
-        return [
-            'id',
-            "title->{$locale}",
-        ];
+        if (count(config('nova-translatable.locales')) > 1) {
+            return [
+                'id',
+                "title->$locale",
+            ];
+        } else {
+            return [
+                'id',
+                'title',
+            ];
+        }
     }
 
     /**
      * Builds Eloquent query for fetching entities in index method.
      *
-     * @param  Request  $request
-     * @param  array  $requestedRelations
+     * @param Request $request
+     * @param array $requestedRelations
      * @return Builder
      */
     protected function buildIndexFetchQuery(Request $request, array $requestedRelations): Builder
