@@ -21,11 +21,7 @@ class PostsController extends Controller
     {
         $locale = app()->getLocale();
 
-        if (count(config('nova-translatable.locales')) > 1) {
-            return "slug->$locale";
-        } else {
-            return "slug";
-        }
+        return "slug";
     }
 
     public function includes(): array
