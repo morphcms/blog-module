@@ -53,7 +53,7 @@ class PostsController extends Controller
         if (count(config('nova-translatable.locales')) > 1) {
             return ["title->$locale", "slug->$locale", "summary->$locale"];
         } else {
-            return ["title", "slug", "summary"];
+            return ['title', 'slug', 'summary'];
         }
     }
 
@@ -77,8 +77,8 @@ class PostsController extends Controller
     /**
      * Builds Eloquent query for fetching entities in index method.
      *
-     * @param Request $request
-     * @param array $requestedRelations
+     * @param  Request  $request
+     * @param  array  $requestedRelations
      * @return Builder
      */
     protected function buildIndexFetchQuery(Request $request, array $requestedRelations): Builder
