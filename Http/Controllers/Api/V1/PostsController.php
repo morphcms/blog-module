@@ -21,7 +21,7 @@ class PostsController extends Controller
     {
         $locale = app()->getLocale();
 
-        return 'slug';
+        return "slug->$locale";
     }
 
     public function includes(): array
